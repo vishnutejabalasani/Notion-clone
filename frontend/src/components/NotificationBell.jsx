@@ -21,7 +21,7 @@ const NotificationBell = () => {
     fetchNotifications();
 
     // Join user-specific socket room
-    const socket = io('http://localhost:5000');
+    const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000');
     socket.emit('joinUser', user._id || user.id);
 
     socket.on('newNotification', () => {
