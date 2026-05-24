@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Layout, CheckCircle2, ListTodo, Users, Sparkles, Bell, UserCheck } from 'lucide-react';
+import { ArrowRight, Layout, ListTodo, Users, Sparkles, Bell, UserCheck } from 'lucide-react';
 import useStore from '../store/useStore';
 
 const Home = () => {
@@ -64,61 +64,6 @@ const Home = () => {
         )}
       </motion.div>
 
-      {/* A Beautiful, Sweet Visual Preview Mockup */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.4 }}
-        className="w-full max-w-3xl glass rounded-2xl border border-white/10 p-5 bg-dark-950/40 backdrop-blur-md shadow-2xl z-10"
-      >
-        {/* Mock Top bar */}
-        <div className="flex items-center justify-between pb-4 border-b border-white/5 mb-4">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-primary-500/20 rounded flex items-center justify-center">
-              <Layout size={13} className="text-primary-400" />
-            </div>
-            <span className="text-xs font-semibold text-slate-300">My Workspace</span>
-          </div>
-          <div className="flex gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-slate-700" />
-            <span className="w-2.5 h-2.5 rounded-full bg-slate-700" />
-            <span className="w-2.5 h-2.5 rounded-full bg-slate-700" />
-          </div>
-        </div>
-
-        {/* Mock Columns */}
-        <div className="grid grid-cols-3 gap-4 text-left">
-          {/* Column 1 */}
-          <div className="space-y-3">
-            <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Todo</div>
-            <div className="bg-dark-900/80 border border-white/5 p-3 rounded-lg shadow-sm">
-              <span className="text-[9px] bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded font-semibold uppercase">High</span>
-              <p className="text-xs font-medium text-white mt-1.5">Draft project scope</p>
-            </div>
-          </div>
-
-          {/* Column 2 */}
-          <div className="space-y-3">
-            <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-              <span>In Progress</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-            </div>
-            <div className="bg-dark-900/80 border border-white/5 p-3 rounded-lg shadow-sm">
-              <span className="text-[9px] bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded font-semibold uppercase">Medium</span>
-              <p className="text-xs font-medium text-white mt-1.5">Design brand asset package</p>
-            </div>
-          </div>
-
-          {/* Column 3 */}
-          <div className="space-y-3">
-            <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Done</div>
-            <div className="bg-dark-900/40 border border-emerald-500/10 p-3 rounded-lg shadow-sm line-through text-slate-500 flex items-start gap-1.5">
-              <CheckCircle2 size={13} className="text-emerald-500 mt-0.5 shrink-0" />
-              <span className="text-xs font-medium truncate">Set up auth routes</span>
-            </div>
-          </div>
-        </div>
-      </motion.div>
 
       {/* Features Grid - Real App Functionalities */}
       <motion.div
