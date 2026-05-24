@@ -38,15 +38,103 @@ const Navbar = () => {
         <nav className="flex items-center gap-4">
           {user ? (
             <>
-              <button 
-                onClick={() => setShowProfileModal(true)}
-                className="flex items-center gap-3 mr-4 cursor-pointer hover:opacity-80 transition text-left group"
-              >
-                <div className="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-sm font-medium text-primary-400 border border-slate-700 group-hover:border-primary-500 transition-colors">
-                  {user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
-                </div>
-                <span className="text-slate-300 group-hover:text-white font-medium hidden sm:block transition-colors">{user?.username || 'User'}</span>
-              </button>
+              {/* Profile Dropdown Container */}
+              <div className="relative">
+                <button 
+                  onClick={() => setShowProfileModal(!showProfileModal)}
+                  className="flex items-center gap-3 mr-2 cursor-pointer hover:opacity-80 transition text-left group"
+                >
+                  <div className="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-sm font-medium text-primary-400 border border-slate-700 group-hover:border-primary-500 transition-colors">
+                    {user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                  <span className="text-slate-300 group-hover:text-white font-medium hidden sm:block transition-colors">{user?.username || 'User'}</span>
+                </button>
+
+                {/* Profile Anchored Dropdown popup */}
+                {showProfileModal && (
+                  <>
+                    {/* Transparent overlay to catch clicks outside dropdown */}
+                    <div 
+                      className="fixed inset-0 z-40 cursor-default" 
+                      onClick={() => setShowProfileModal(false)}
+                    />
+                    
+                    {/* Absolute positioned dropdown card */}
+                    <div className="absolute right-0 mt-2 bg-slate-900 border border-white/10 rounded-2xl w-64 overflow-hidden shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200 flex flex-col text-left">
+                      {/* Gradient Header Banner */}
+                      <div className="h-16 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 relative flex justify-end p-2">
+                        <button 
+                          onClick={() => setShowProfileModal(false)}
+                          className="w-5 h-5 bg-black/30 hover:bg-black/50 text-white rounded-full flex items-center justify-center transition focus:outline-none"
+                        >
+                          <X size={10} />
+                        </button>
+                      </div>
+
+                      {/* Profile Content Body */}
+                      <div className="px-4 pb-4 relative flex flex-col">
+                        
+                        {/* Profile avatar overlapping banner */}
+                        <div className="absolute top-[-24px] left-4 flex items-end">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary-600 via-violet-500 to-primary-400 border-2 border-slate-900 flex items-center justify-center text-lg font-bold text-white shadow-lg">
+                            {user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
+                          </div>
+                          
+                          {/* Briefcase circle badge next to avatar */}
+                          <div className="w-4 h-4 bg-blue-600 rounded-full border border-slate-900 flex items-center justify-center shadow absolute bottom-0 right-0 text-white">
+                            <Briefcase size={7} />
+                          </div>
+                        </div>
+
+                        {/* Space offset */}
+                        <div className="h-8" />
+
+                        {/* Data fields */}
+                        <div className="space-y-2.5">
+                          <div>
+                            <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Full Name</div>
+                            <div className="text-xs font-semibold text-white mt-0.5">{user?.username || 'Guest User'}</div>
+                          </div>
+
+                          <div>
+                            <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Email</div>
+                            <div className="text-xs font-semibold text-white mt-0.5">{user?.email || 'N/A'}</div>
+                          </div>
+
+                          <div className="flex items-center justify-between gap-2">
+                            <div>
+                              <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Role</div>
+                              <div className="mt-0.5 inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider">
+                                user
+                              </div>
+                            </div>
+
+                            <div>
+                              <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Member Since</div>
+                              <div className="text-xs font-semibold text-white mt-0.5">
+                                {formatDate(user?.createdAt)}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Close Button at bottom */}
+                        <div className="mt-4 pt-2.5 border-t border-white/5">
+                          <button
+                            onClick={() => setShowProfileModal(false)}
+                            className="w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-1.5 rounded-xl transition focus:outline-none text-[10px]"
+                          >
+                            Close
+                          </button>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </>
+                )}
+              </div>
+
               <Link 
                 to="/dashboard"
                 className="flex items-center gap-1.5 text-slate-300 hover:text-white transition font-medium mr-2"
@@ -73,84 +161,6 @@ const Navbar = () => {
           )}
         </nav>
       </div>
-
-      {/* Profile Card Modal */}
-      {showProfileModal && (
-        <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center z-[9999] p-4 animate-in fade-in duration-200">
-          <div className="bg-slate-900 border border-white/10 rounded-2xl w-full max-w-xs overflow-hidden shadow-2xl relative animate-in zoom-in-95 duration-200 flex flex-col text-left">
-            
-            {/* Header Banner - Gradient from blue to violet/purple */}
-            <div className="h-24 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 relative flex justify-end p-3">
-              <button 
-                onClick={() => setShowProfileModal(false)}
-                className="w-7 h-7 bg-black/30 hover:bg-black/50 text-white rounded-full flex items-center justify-center transition focus:outline-none"
-              >
-                <X size={14} />
-              </button>
-            </div>
-
-            {/* Profile Content Body */}
-            <div className="px-5 pb-5 relative flex flex-col">
-              
-              {/* Profile avatar overlapping banner */}
-              <div className="absolute top-[-36px] left-5 flex items-end">
-                <div className="w-18 h-18 rounded-full bg-gradient-to-tr from-primary-600 via-violet-500 to-primary-400 border-4 border-slate-900 flex items-center justify-center text-2xl font-bold text-white shadow-lg">
-                  {user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
-                </div>
-                
-                {/* Little blue edit/briefcase circle badge next to avatar */}
-                <div className="w-6 h-6 bg-blue-600 rounded-full border-2 border-slate-900 flex items-center justify-center shadow absolute bottom-0.5 right-0.5 text-white">
-                  <Briefcase size={10} />
-                </div>
-              </div>
-
-              {/* Offset space for overlapping avatar */}
-              <div className="h-14" />
-
-              {/* Data fields */}
-              <div className="space-y-3.5">
-                
-                <div>
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Full Name</div>
-                  <div className="text-sm font-semibold text-white mt-0.5">{user?.username || 'Guest User'}</div>
-                </div>
-
-                <div>
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Email</div>
-                  <div className="text-sm font-semibold text-white mt-0.5">{user?.email || 'N/A'}</div>
-                </div>
-
-                <div>
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Role</div>
-                  <div className="mt-1 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider">
-                    user
-                  </div>
-                </div>
-
-                <div>
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Member Since</div>
-                  <div className="text-sm font-semibold text-white mt-0.5">
-                    {formatDate(user?.createdAt)}
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Close Button at bottom */}
-              <div className="mt-5 pt-3 border-t border-white/5">
-                <button
-                  onClick={() => setShowProfileModal(false)}
-                  className="w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-2 rounded-xl transition focus:outline-none text-xs"
-                >
-                  Close
-                </button>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      )}
     </header>
 
   );
