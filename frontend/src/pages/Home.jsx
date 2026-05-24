@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Layout, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Layout, CheckCircle2, ListTodo, Users, Sparkles, Bell, UserCheck } from 'lucide-react';
 import useStore from '../store/useStore';
 
 const Home = () => {
@@ -117,6 +117,75 @@ const Home = () => {
               <span className="text-xs font-medium truncate">Set up auth routes</span>
             </div>
           </div>
+        </div>
+      </motion.div>
+
+      {/* Features Grid - Real App Functionalities */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        className="w-full max-w-3xl mt-20 z-10 text-center"
+      >
+        <h2 className="text-xl font-bold text-white mb-2">Everything you need to ship faster</h2>
+        <p className="text-sm text-slate-400 max-w-md mx-auto mb-10">A fully integrated productivity suite crafted with care.</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
+          
+          {/* Card 1: Kanban Workspaces */}
+          <div className="bg-slate-900/40 border border-white/5 p-4 rounded-xl hover:border-primary-500/20 hover:bg-slate-900/60 transition duration-300">
+            <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center mb-3">
+              <Layout size={16} className="text-blue-400" />
+            </div>
+            <h3 className="text-sm font-semibold text-white">Visual Kanban</h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">Customize boards, columns, and drag tasks effortlessly through your workflow.</p>
+          </div>
+
+          {/* Card 2: Rich Task Details */}
+          <div className="bg-slate-900/40 border border-white/5 p-4 rounded-xl hover:border-primary-500/20 hover:bg-slate-900/60 transition duration-300">
+            <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center mb-3">
+              <ListTodo size={16} className="text-amber-400" />
+            </div>
+            <h3 className="text-sm font-semibold text-white">Rich Task Details</h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">Add task priorities, subtask checklists, due date calendars, and upload attachments.</p>
+          </div>
+
+          {/* Card 3: Real-Time Sync */}
+          <div className="bg-slate-900/40 border border-white/5 p-4 rounded-xl hover:border-primary-500/20 hover:bg-slate-900/60 transition duration-300">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3">
+              <Users size={16} className="text-emerald-400" />
+            </div>
+            <h3 className="text-sm font-semibold text-white">Live Collaboration</h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">Instantly sync changes across your team with real-time Socket.io active board shares.</p>
+          </div>
+
+          {/* Card 4: Gemini AI */}
+          <div className="bg-slate-900/40 border border-white/5 p-4 rounded-xl hover:border-primary-500/20 hover:bg-slate-900/60 transition duration-300">
+            <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center mb-3">
+              <Sparkles size={16} className="text-purple-400 animate-pulse" />
+            </div>
+            <h3 className="text-sm font-semibold text-white">Gemini AI Assistant</h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">Leverage Google Gemini power to generate subtasks and summarize comments dynamically.</p>
+          </div>
+
+          {/* Card 5: Smart Notifications */}
+          <div className="bg-slate-900/40 border border-white/5 p-4 rounded-xl hover:border-primary-500/20 hover:bg-slate-900/60 transition duration-300">
+            <div className="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center mb-3">
+              <Bell size={16} className="text-rose-400" />
+            </div>
+            <h3 className="text-sm font-semibold text-white">Smart Alerts</h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">Stay updated in real-time when team members mention, assign, or share boards with you.</p>
+          </div>
+
+          {/* Card 6: Task Ownership */}
+          <div className="bg-slate-900/40 border border-white/5 p-4 rounded-xl hover:border-primary-500/20 hover:bg-slate-900/60 transition duration-300">
+            <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center mb-3">
+              <UserCheck size={16} className="text-violet-400" />
+            </div>
+            <h3 className="text-sm font-semibold text-white">Team Assignment</h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">Assign cards to team members to establish clear ownership and drive execution.</p>
+          </div>
+
         </div>
       </motion.div>
 
