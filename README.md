@@ -26,55 +26,6 @@ The platform is engineered to bridge frontend responsiveness with backend reliab
 
 ---
 
-## System Architecture
-
-The following diagram illustrates the structural layout of the application, representing the interactions between the React Client, Zustand Store, Express API, Socket.io Rooms, MongoDB Database, Cloudinary Storage, and the Google Gemini AI cascade:
-
-```mermaid
-graph TD
-    %% Frontend Client Layer
-    subgraph Client [React Frontend (Port 5173)]
-        A[Dashboard / Board Views] -->|Reads / Writes| B[Zustand State Store]
-        A -->|UI Drag-and-Drop Operations| C[dnd-kit Engine]
-        A -->|HTTP Rest Requests| D[Axios Client Interceptors]
-        A -->|Live Events Listener| E[Socket.io-client]
-    end
-
-    %% Network / Protocol Layer
-    subgraph Protocols [Communication Protocols]
-        D -->|HTTPS REST API / JSON| F[Express Application Router]
-        E -->|WebSockets Concurrency| G[Socket.io Server Hub]
-    end
-
-    %% Backend Services Layer
-    subgraph Server [Express Backend (Port 5000)]
-        F -->|JWT Guards / Upload Gateways| H[Controllers / Middleware]
-        G -->|Board Room Broadcasts| I[Socket Event Handlers]
-        H -->|ODM Schema Layer| J[Mongoose Models]
-        H -->|Image & Media Streams| K[Multer + Cloudinary Engine]
-        H -->|Task Breakdown Prompt Cascade| L[Gemini AI Service]
-    end
-
-    %% External Infrastructure
-    subgraph Infrastructure [Data & External API Layers]
-        J -->|Data Persistence| M[(MongoDB Database)]
-        L -->|Cascading API Requests| N[Google Gemini API]
-        L -->|Timeout / Offline Fallback| O[Local Intelligent Keywords]
-        K -->|Media Uploads / CDN| P[Cloudinary Cloud Service]
-    end
-
-    classDef clientStyle fill:#1e1e38,stroke:#7289da,stroke-width:2px,color:#fff;
-    classDef protocolStyle fill:#2d1b30,stroke:#d53f8c,stroke-width:2px,color:#fff;
-    classDef serverStyle fill:#1a3024,stroke:#48bb78,stroke-width:2px,color:#fff;
-    classDef dbStyle fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
-    
-    class Client,A,B,C,D,E clientStyle;
-    class Protocols,F,G protocolStyle;
-    class Server,H,I,J,K,L serverStyle;
-    class Infrastructure,M,N,O,P,Q,R dbStyle;
-```
-
----
 
 ## Key Features
 
