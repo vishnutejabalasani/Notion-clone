@@ -25,7 +25,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-dark-950/80 backdrop-blur border-b border-white/10 p-4 sticky top-0 z-50">
+    <header className="bg-dark-950/80 backdrop-blur border-b border-white/10 p-4 sticky top-0 z-[100]">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-tr from-primary-600 to-primary-400 rounded-lg flex items-center justify-center shadow-lg shadow-primary-500/20">
@@ -76,8 +76,8 @@ const Navbar = () => {
 
       {/* Profile Card Modal */}
       {showProfileModal && (
-        <div className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-          <div className="bg-dark-900 border border-white/10 rounded-2xl w-full max-w-xs overflow-hidden shadow-2xl relative animate-in zoom-in-95 duration-200 flex flex-col text-left">
+        <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center z-[9999] p-4 animate-in fade-in duration-200">
+          <div className="bg-slate-900 border border-white/10 rounded-2xl w-full max-w-xs overflow-hidden shadow-2xl relative animate-in zoom-in-95 duration-200 flex flex-col text-left">
             
             {/* Header Banner - Gradient from blue to violet/purple */}
             <div className="h-24 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 relative flex justify-end p-3">
@@ -94,12 +94,12 @@ const Navbar = () => {
               
               {/* Profile avatar overlapping banner */}
               <div className="absolute top-[-36px] left-5 flex items-end">
-                <div className="w-18 h-18 rounded-full bg-gradient-to-tr from-primary-600 via-violet-500 to-primary-400 border-4 border-dark-900 flex items-center justify-center text-2xl font-bold text-white shadow-lg">
+                <div className="w-18 h-18 rounded-full bg-gradient-to-tr from-primary-600 via-violet-500 to-primary-400 border-4 border-slate-900 flex items-center justify-center text-2xl font-bold text-white shadow-lg">
                   {user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
                 </div>
                 
                 {/* Little blue edit/briefcase circle badge next to avatar */}
-                <div className="w-6 h-6 bg-blue-600 rounded-full border-2 border-dark-900 flex items-center justify-center shadow absolute bottom-0.5 right-0.5 text-white">
+                <div className="w-6 h-6 bg-blue-600 rounded-full border-2 border-slate-900 flex items-center justify-center shadow absolute bottom-0.5 right-0.5 text-white">
                   <Briefcase size={10} />
                 </div>
               </div>
