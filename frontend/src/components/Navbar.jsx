@@ -33,6 +33,13 @@ const Navbar = () => {
                 </div>
                 <span className="text-slate-300 font-medium hidden sm:block">{user?.username || 'User'}</span>
               </div>
+              <Link 
+                to="/dashboard"
+                className="flex items-center gap-1.5 text-slate-300 hover:text-white transition font-medium mr-2"
+              >
+                <LayoutDashboard size={16} className="text-primary-400" />
+                <span>Dashboard</span>
+              </Link>
               <NotificationBell />
               <button 
                 onClick={handleLogout}
