@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore';
-import { LayoutDashboard, LogOut } from 'lucide-react';
+import { LayoutDashboard, LogOut, X, Briefcase } from 'lucide-react';
 import NotificationBell from './NotificationBell';
 
 const Navbar = () => {
   const { user, logout } = useStore();
   const navigate = useNavigate();
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'May 24, 2026';
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch (e) {
+      return 'May 24, 2026';
+    }
   };
 
   return (
@@ -27,12 +38,15 @@ const Navbar = () => {
         <nav className="flex items-center gap-4">
           {user ? (
             <>
-              <div className="flex items-center gap-3 mr-4">
-                <div className="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-sm font-medium text-primary-400 border border-slate-700">
+              <button 
+                onClick={() => setShowProfileModal(true)}
+                className="flex items-center gap-3 mr-4 cursor-pointer hover:opacity-80 transition text-left group"
+              >
+                <div className="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-sm font-medium text-primary-400 border border-slate-700 group-hover:border-primary-500 transition-colors">
                   {user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
                 </div>
-                <span className="text-slate-300 font-medium hidden sm:block">{user?.username || 'User'}</span>
-              </div>
+                <span className="text-slate-300 group-hover:text-white font-medium hidden sm:block transition-colors">{user?.username || 'User'}</span>
+              </button>
               <Link 
                 to="/dashboard"
                 className="flex items-center gap-1.5 text-slate-300 hover:text-white transition font-medium mr-2"
@@ -59,7 +73,86 @@ const Navbar = () => {
           )}
         </nav>
       </div>
+
+      {/* Profile Card Modal */}
+      {showProfileModal && (
+        <div className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+          <div className="bg-dark-900 border border-white/10 rounded-2xl w-full max-w-xs overflow-hidden shadow-2xl relative animate-in zoom-in-95 duration-200 flex flex-col text-left">
+            
+            {/* Header Banner - Gradient from blue to violet/purple */}
+            <div className="h-24 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 relative flex justify-end p-3">
+              <button 
+                onClick={() => setShowProfileModal(false)}
+                className="w-7 h-7 bg-black/30 hover:bg-black/50 text-white rounded-full flex items-center justify-center transition focus:outline-none"
+              >
+                <X size={14} />
+              </button>
+            </div>
+
+            {/* Profile Content Body */}
+            <div className="px-5 pb-5 relative flex flex-col">
+              
+              {/* Profile avatar overlapping banner */}
+              <div className="absolute top-[-36px] left-5 flex items-end">
+                <div className="w-18 h-18 rounded-full bg-gradient-to-tr from-primary-600 via-violet-500 to-primary-400 border-4 border-dark-900 flex items-center justify-center text-2xl font-bold text-white shadow-lg">
+                  {user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
+                </div>
+                
+                {/* Little blue edit/briefcase circle badge next to avatar */}
+                <div className="w-6 h-6 bg-blue-600 rounded-full border-2 border-dark-900 flex items-center justify-center shadow absolute bottom-0.5 right-0.5 text-white">
+                  <Briefcase size={10} />
+                </div>
+              </div>
+
+              {/* Offset space for overlapping avatar */}
+              <div className="h-14" />
+
+              {/* Data fields */}
+              <div className="space-y-3.5">
+                
+                <div>
+                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Full Name</div>
+                  <div className="text-sm font-semibold text-white mt-0.5">{user?.username || 'Guest User'}</div>
+                </div>
+
+                <div>
+                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Email</div>
+                  <div className="text-sm font-semibold text-white mt-0.5">{user?.email || 'N/A'}</div>
+                </div>
+
+                <div>
+                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Role</div>
+                  <div className="mt-1 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider">
+                    user
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Member Since</div>
+                  <div className="text-sm font-semibold text-white mt-0.5">
+                    {formatDate(user?.createdAt)}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Close Button at bottom */}
+              <div className="mt-5 pt-3 border-t border-white/5">
+                <button
+                  onClick={() => setShowProfileModal(false)}
+                  className="w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-2 rounded-xl transition focus:outline-none text-xs"
+                >
+                  Close
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      )}
     </header>
+
   );
 };
 
