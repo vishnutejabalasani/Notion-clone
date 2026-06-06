@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Trash, Plus, Check, MessageSquare, Sparkles } from 'lucide-react';
+import { X, Trash, Plus, Check, MessageSquare, Sparkles, Paperclip, Link2, ExternalLink, FileText, Image } from 'lucide-react';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 import useStore from '../store/useStore';
@@ -13,6 +13,7 @@ const EditCardModal = ({ card, onClose, boardId }) => {
   const [labels, setLabels] = useState(card.labels || []);
   const [checklists, setChecklists] = useState(card.checklists || []);
   const [comments, setComments] = useState(card.comments || []);
+  const [attachments, setAttachments] = useState(card.attachments || []);
   const [loading, setLoading] = useState(false);
   const [aiGenerating, setAiGenerating] = useState(false);
 
@@ -21,6 +22,12 @@ const EditCardModal = ({ card, onClose, boardId }) => {
   const [newChecklistTitle, setNewChecklistTitle] = useState('');
   const [newLabelText, setNewLabelText] = useState('');
   const [newLabelColor, setNewLabelColor] = useState('bg-blue-500');
+  
+  // Attachments states
+  const [attachmentUrl, setAttachmentUrl] = useState('');
+  const [attachmentName, setAttachmentName] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  const [attachmentTab, setAttachmentTab] = useState('upload'); // 'upload' or 'link'
 
   const labelColors = [
     'bg-blue-500', 'bg-emerald-500', 'bg-rose-500', 
@@ -39,7 +46,7 @@ const EditCardModal = ({ card, onClose, boardId }) => {
 
     try {
       await api.put(`/boards/cards/${card._id}`, {
-        updates: { title, description, priority, labels, checklists, comments: formattedComments },
+        updates: { title, description, priority, labels, checklists, comments: formattedComments, attachments },
         boardId
       });
       toast.success('Card updated successfully');
@@ -48,6 +55,49 @@ const EditCardModal = ({ card, onClose, boardId }) => {
       toast.error('Failed to update card');
       setLoading(false);
     }
+  };
+
+  // Attachment Actions
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setIsUploading(true);
+    
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setAttachments([
+        ...attachments,
+        { 
+          url: reader.result || '#', 
+          filename: file.name, 
+          addedAt: new Date() 
+        }
+      ]);
+      setIsUploading(false);
+      toast.success(`File "${file.name}" attached successfully!`);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const addLinkAttachment = () => {
+    if (!attachmentUrl.trim()) return;
+    const name = attachmentName.trim() || attachmentUrl.split('/').pop() || 'Attachment';
+    setAttachments([
+      ...attachments,
+      {
+        url: attachmentUrl.startsWith('http') ? attachmentUrl : `https://${attachmentUrl}`,
+        filename: name,
+        addedAt: new Date()
+      }
+    ]);
+    setAttachmentUrl('');
+    setAttachmentName('');
+    toast.success('Link attached successfully!');
+  };
+
+  const removeAttachment = (idx) => {
+    setAttachments(attachments.filter((_, i) => i !== idx));
+    toast.success('Attachment removed');
   };
 
   const handleDelete = async () => {
@@ -243,6 +293,124 @@ const EditCardModal = ({ card, onClose, boardId }) => {
                     </div>
                   );
                 })}
+              </div>
+            </section>
+
+            {/* Attachments Section */}
+            <section className="space-y-4">
+              <h3 className="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                <Paperclip size={16} />
+                Attachments
+              </h3>
+
+              {/* Attachments List */}
+              {attachments.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {attachments.map((att, idx) => {
+                    const isImg = att.url?.startsWith('data:image/') || /\.(jpeg|jpg|gif|png|webp|svg)/i.test(att.url);
+                    return (
+                      <div key={idx} className="flex items-center gap-3 p-3 bg-dark-800 rounded-lg border border-slate-700/50 group relative">
+                        {isImg ? (
+                          <img src={att.url} alt={att.filename} className="w-12 h-12 object-cover rounded bg-dark-950 border border-slate-700 shrink-0" />
+                        ) : (
+                          <div className="w-12 h-12 rounded bg-dark-950 border border-slate-700 flex items-center justify-center shrink-0 text-slate-500">
+                            <FileText size={20} />
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-medium text-slate-200 truncate pr-6" title={att.filename}>
+                            {att.filename}
+                          </h4>
+                          <span className="text-[10px] text-slate-400">
+                            {att.addedAt ? format(new Date(att.addedAt), 'MMM d, yyyy') : 'Recently added'}
+                          </span>
+                        </div>
+
+                        <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <a 
+                            href={att.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white"
+                            title="Open in new tab"
+                          >
+                            <ExternalLink size={12} />
+                          </a>
+                          <button 
+                            type="button"
+                            onClick={() => removeAttachment(idx)} 
+                            className="p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-red-400 cursor-pointer"
+                            title="Remove attachment"
+                          >
+                            <Trash size={12} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Attachments Input Form tabs */}
+              <div className="bg-dark-800 rounded-xl border border-slate-700/50 overflow-hidden">
+                <div className="flex border-b border-slate-700">
+                  <button 
+                    type="button"
+                    onClick={() => setAttachmentTab('upload')}
+                    className={`flex-1 py-2 text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer ${attachmentTab === 'upload' ? 'bg-slate-700/40 text-white border-b-2 border-primary-500' : 'text-slate-400 hover:text-white hover:bg-slate-800/30'}`}
+                  >
+                    <Paperclip size={12} />
+                    Upload File
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setAttachmentTab('link')}
+                    className={`flex-1 py-2 text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer ${attachmentTab === 'link' ? 'bg-slate-700/40 text-white border-b-2 border-primary-500' : 'text-slate-400 hover:text-white hover:bg-slate-800/30'}`}
+                  >
+                    <Link2 size={12} />
+                    Attach Link
+                  </button>
+                </div>
+
+                <div className="p-4">
+                  {attachmentTab === 'upload' ? (
+                    <label className="flex flex-col items-center justify-center border border-dashed border-slate-700 hover:border-primary-500/50 rounded-lg p-6 cursor-pointer transition bg-dark-900/40 hover:bg-dark-900/80 group">
+                      <Paperclip className="w-8 h-8 text-slate-500 group-hover:text-primary-400 mb-2 transition" />
+                      <span className="text-xs font-medium text-slate-300">
+                        {isUploading ? 'Uploading and processing...' : 'Select a local file to attach'}
+                      </span>
+                      <span className="text-[10px] text-slate-500 mt-1">Images, PDFs, or documents</span>
+                      <input type="file" className="hidden" disabled={isUploading} onChange={handleFileUpload} />
+                    </label>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input 
+                          type="text" 
+                          placeholder="Attachment Title (e.g. Figma File)"
+                          value={attachmentName}
+                          onChange={(e) => setAttachmentName(e.target.value)}
+                          className="bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-primary-500"
+                        />
+                        <input 
+                          type="text" 
+                          placeholder="https://example.com/file"
+                          value={attachmentUrl}
+                          onChange={(e) => setAttachmentUrl(e.target.value)}
+                          className="bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-primary-500"
+                        />
+                      </div>
+                      <button 
+                        type="button"
+                        onClick={addLinkAttachment}
+                        disabled={!attachmentUrl.trim()}
+                        className="w-full bg-slate-700 hover:bg-slate-650 disabled:opacity-50 text-white py-2 rounded-lg text-xs font-semibold transition cursor-pointer"
+                      >
+                        Attach Link
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </section>
 

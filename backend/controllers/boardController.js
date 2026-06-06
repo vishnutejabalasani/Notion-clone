@@ -270,6 +270,7 @@ const updateCard = async (req, res) => {
     if (updates.checklists !== undefined) card.checklists = updates.checklists;
     if (updates.status !== undefined) card.status = updates.status;
     if (updates.dueDate !== undefined) card.dueDate = updates.dueDate;
+    if (updates.attachments !== undefined) card.attachments = updates.attachments;
 
     await card.save();
 
@@ -288,10 +289,10 @@ const updateCard = async (req, res) => {
 // Update Board
 const updateBoard = async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description, background } = req.body;
     const board = await Board.findByIdAndUpdate(
       req.params.id,
-      { title, description },
+      { title, description, background },
       { new: true }
     );
     if (!board) {

@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @layer base {
+  html {
+    font-size: 17px;
+  }
   body {
     @apply bg-slate-900 text-slate-100 font-sans;
   }
