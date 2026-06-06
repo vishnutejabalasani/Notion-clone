@@ -191,8 +191,8 @@ const ShareBoardModal = ({ isOpen, onClose, board, onUpdateBoard }) => {
               {board.members.map(m => {
                 const memberUser = m.userId;
                 if (!memberUser) return null;
-                const isSelf = memberUser._id === currentUser?._id;
-                const isOwner = board.owner === memberUser._id;
+                const isSelf = memberUser._id === currentUser?._id || memberUser._id === currentUser?.id;
+                const isOwner = board.owner === memberUser._id || board.owner?._id === memberUser._id;
                 
                 return (
                   <div key={memberUser._id} className="flex items-center justify-between p-3 bg-dark-950/40 border border-slate-800/60 rounded-xl hover:border-slate-700/50 transition-colors">

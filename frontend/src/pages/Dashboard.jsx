@@ -136,7 +136,7 @@ const Dashboard = () => {
             <div className="bg-slate-900/60 border border-white/5 rounded-xl px-5 py-3.5 backdrop-blur-sm">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Shared Boards</div>
               <div className="text-2xl font-extrabold text-primary-400 mt-1">
-                {boards.filter(b => b.owner?._id !== user?._id && b.owner !== user?._id).length}
+                {boards.filter(b => b.owner?._id !== user?.id && b.owner !== user?.id && b.owner?._id !== user?._id && b.owner !== user?._id).length}
               </div>
             </div>
           </div>
@@ -192,7 +192,7 @@ const Dashboard = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {filteredBoards.map(board => {
-              const isOwner = board.owner?._id === user?._id || board.owner === user?._id || board.owner === user?.id;
+              const isOwner = board.owner?._id === user?._id || board.owner?._id === user?.id || board.owner === user?._id || board.owner === user?.id;
               
               return (
                 <div 
