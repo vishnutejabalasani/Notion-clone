@@ -52,7 +52,7 @@ const EditCardModal = ({ card, onClose, boardId }) => {
       toast.success('Card updated successfully');
       onClose();
     } catch (error) {
-      toast.error('Failed to update card');
+      toast.error(error.response?.data?.message || error.message || 'Failed to update card');
       setLoading(false);
     }
   };
