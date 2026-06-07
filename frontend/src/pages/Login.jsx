@@ -36,7 +36,7 @@ const Login = () => {
             <LogIn className="text-white" size={24} />
           </div>
           <h2 className="text-2xl font-bold text-white">Welcome Back</h2>
-          <p className="text-slate-400 mt-1">Sign in to continue to CollabTask</p>
+          <p className="text-slate-400 mt-1">Sign in to continue to TaskFlow</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">

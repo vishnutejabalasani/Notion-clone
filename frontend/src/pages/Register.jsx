@@ -37,7 +37,7 @@ const Register = () => {
             <UserPlus className="text-white" size={24} />
           </div>
           <h2 className="text-2xl font-bold text-white">Create Account</h2>
-          <p className="text-slate-400 mt-1">Join CollabTask today</p>
+          <p className="text-slate-400 mt-1">Join TaskFlow today</p>
         </div>
 
         <form onSubmit={handleRegister} className="space-y-4">

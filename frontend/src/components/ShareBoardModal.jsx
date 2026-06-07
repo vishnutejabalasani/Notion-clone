@@ -77,7 +77,7 @@ const ShareBoardModal = ({ isOpen, onClose, board, onUpdateBoard }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm flex items-center justify-center z-[150] p-4">
       <div className="bg-dark-900 border border-slate-700/60 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         
         {/* Header */}

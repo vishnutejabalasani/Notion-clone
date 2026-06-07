@@ -177,7 +177,7 @@ const EditCardModal = ({ card, onClose, boardId }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[150] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
       <div className="bg-dark-900 border border-slate-700 w-full max-w-4xl rounded-xl shadow-2xl relative my-auto">
         <div className="sticky top-0 bg-dark-900 border-b border-slate-700 p-4 flex justify-between items-center rounded-t-xl z-10">
           <h2 className="text-xl font-bold text-white flex-1 mr-4">

@@ -280,7 +280,7 @@ const Dashboard = () => {
 
       {/* Create Board Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm flex items-center justify-center z-[150] p-4">
           <div className="bg-dark-900 border border-white/10 w-full max-w-md p-6 rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200">
             <h2 className="text-xl font-bold text-white mb-4">Create New Workspace</h2>
             <form onSubmit={createBoard}>
@@ -335,7 +335,7 @@ const Dashboard = () => {
       
       {/* Edit Board Modal */}
       {editingBoard && (
-        <div className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm flex items-center justify-center z-[150] p-4">
           <div className="bg-dark-900 border border-white/10 w-full max-w-md p-6 rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200 relative">
             <button 
               onClick={() => setEditingBoard(null)}
