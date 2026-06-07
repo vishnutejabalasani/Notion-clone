@@ -309,7 +309,13 @@ const EditCardModal = ({ card, onClose, boardId }) => {
                   {attachments.map((att, idx) => {
                     const isImg = att.url?.startsWith('data:image/') || /\.(jpeg|jpg|gif|png|webp|svg)/i.test(att.url);
                     return (
-                      <div key={idx} className="flex items-center gap-3 p-3 bg-dark-800 rounded-lg border border-slate-700/50 group relative">
+                      <a 
+                        key={idx} 
+                        href={att.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 p-3 bg-dark-800 hover:bg-dark-750 border border-slate-700/50 hover:border-slate-650 rounded-lg group relative cursor-pointer transition-all duration-200"
+                      >
                         {isImg ? (
                           <img src={att.url} alt={att.filename} className="w-12 h-12 object-cover rounded bg-dark-950 border border-slate-700 shrink-0" />
                         ) : (
@@ -318,7 +324,7 @@ const EditCardModal = ({ card, onClose, boardId }) => {
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-medium text-slate-200 truncate pr-6" title={att.filename}>
+                          <h4 className="text-sm font-medium text-slate-200 group-hover:text-primary-400 truncate pr-6" title={att.filename}>
                             {att.filename}
                           </h4>
                           <span className="text-[10px] text-slate-400">
@@ -327,25 +333,20 @@ const EditCardModal = ({ card, onClose, boardId }) => {
                         </div>
 
                         <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <a 
-                            href={att.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white"
-                            title="Open in new tab"
-                          >
-                            <ExternalLink size={12} />
-                          </a>
                           <button 
                             type="button"
-                            onClick={() => removeAttachment(idx)} 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              removeAttachment(idx);
+                            }} 
                             className="p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-red-400 cursor-pointer"
                             title="Remove attachment"
                           >
                             <Trash size={12} />
                           </button>
                         </div>
-                      </div>
+                      </a>
                     );
                   })}
                 </div>
