@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Activity = require('../models/Activity');
 
 const registerUser = async (req, res) => {
   try {
@@ -25,7 +26,7 @@ const registerUser = async (req, res) => {
     res.status(201).json({
       message: "User registered successfully",
       token,
-      user: { id: user._id, username: user.username, email: user.email, profilePic: user.profilePic }
+      user: { id: user._id, username: user.username, email: user.email, profilePic: user.profilePic, createdAt: user.createdAt }
     });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
@@ -51,11 +52,24 @@ const loginUser = async (req, res) => {
     res.status(200).json({
       message: "Login successful",
       token,
-      user: { id: user._id, username: user.username, email: user.email, profilePic: user.profilePic }
+      user: { id: user._id, username: user.username, email: user.email, profilePic: user.profilePic, createdAt: user.createdAt }
     });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
 
-module.exports = { registerUser, loginUser };
+const getUserActivities = async (req, res) => {
+  try {
+    const activities = await Activity.find({ userId: req.user.id })
+      .sort({ createdAt: -1 })
+      .limit(50)
+      .populate('boardId', 'title')
+      .populate('cardId', 'title');
+    res.status(200).json(activities);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, getUserActivities };

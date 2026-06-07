@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore';
-import { LayoutDashboard, LogOut, X, Briefcase } from 'lucide-react';
+import { LayoutDashboard, LogOut, X, Briefcase, History } from 'lucide-react';
 import NotificationBell from './NotificationBell';
 
 const Navbar = () => {
@@ -118,11 +118,19 @@ const Navbar = () => {
                           </div>
                         </div>
 
-                        {/* Close Button at bottom */}
-                        <div className="mt-4 pt-2.5 border-t border-white/5">
+                        {/* Close & Activity Buttons at bottom */}
+                        <div className="mt-4 pt-2.5 border-t border-white/5 flex gap-2">
+                          <Link
+                            to="/profile"
+                            onClick={() => setShowProfileModal(false)}
+                            className="flex-1 bg-primary-600 hover:bg-primary-500 text-white font-semibold py-1.5 rounded-xl transition focus:outline-none text-[10px] flex items-center justify-center gap-1 cursor-pointer text-center"
+                          >
+                            <History size={10} />
+                            Activity Log
+                          </Link>
                           <button
                             onClick={() => setShowProfileModal(false)}
-                            className="w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-1.5 rounded-xl transition focus:outline-none text-[10px]"
+                            className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-medium py-1.5 rounded-xl transition focus:outline-none text-[10px] cursor-pointer"
                           >
                             Close
                           </button>
