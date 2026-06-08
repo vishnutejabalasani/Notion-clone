@@ -15,6 +15,10 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters long');
+      return;
+    }
     try {
       setLoading(true);
       const { data } = await api.post('/auth/register', { username, email, password });
@@ -68,6 +72,7 @@ const Register = () => {
             <input
               type="password"
               required
+              minLength={6}
               className="w-full bg-dark-800/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
               placeholder="••••••••"
               value={password}
